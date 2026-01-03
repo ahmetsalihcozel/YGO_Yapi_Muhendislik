@@ -1,0 +1,171 @@
+[
+    {
+    "id": 1,
+    "title": "Bosch merdiven",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Bosch.svg"
+  },
+  {
+    "id": 2,
+    "title": "Reysaş Lojistik Çelik Merdiven İmalat ve Montajı",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Reysaş.png"
+  },
+  {
+    "id": 3,
+    "title": "Homer Yapı Çelik Çatı ve Döşeme İşleri",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Homer.png"
+  },
+  {
+    "id": 4,
+    "title": "Özel Bilfen Okulları Kandilli Villa Çelik Döşeme Güçlendirme ve Çatı İşleri",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Bilfen.png"
+  },
+  {
+    "id": 5,
+    "title": "İzmir Reysaş Lojistik Merdiven",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Reysaş.png"
+  },
+  {
+    "id": 6,
+    "title": "Bilfen Sancaktepe Çelik Arakat",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Bilfen.png"
+  },
+  {
+    "id": 7,
+    "title": "Korkuluk İşleri",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": ""
+  },
+  {
+    "id": 8,
+    "title": "Horoz Lojistik Arakat Projelendirme ve Uygulama",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Horoz.svg"
+  },
+  {
+    "id": 9,
+    "title": "Bosch Makine Üstü Kapama",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Bosch.svg"
+  },
+  {
+    "id": 10,
+    "title": "Starwood İnegöl Borulama Köprüsü",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Starwood.svg"
+  },
+  {
+    "id": 11,
+    "title": "Dilovası ABC ELEKTİRİK Giriş Sundurma İmalatları",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": ""
+  },
+  {
+    "id": 12,
+    "title": "Poyrazköy Çelik Villa",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": ""
+  },
+  {
+    "id": 13,
+    "title": "Rulo Sac Stoklama Rafı",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": ""
+  },
+  {
+    "id": 14,
+    "title": "Bilfen Villa Merdiveni",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Bilfen.png"
+  },
+  {
+    "id": 15,
+    "title": "Villa Çatı ve Parapet Giydirmeleri",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": ""
+  },
+  {
+    "id": 16,
+    "title": "Bilfen Ömerli Korkuluk İşleri",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Bilfen.png"
+  },
+  {
+    "id": 17,
+    "title": "Bilfen Büyükçekmece Çelik Çatı",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Bilfen.png"
+  },
+  {
+    "id": 18,
+    "title": "Luna Tekstil Platform",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": ""
+  },
+  {
+    "id": 19,
+    "title": "Pres çukuru kapama işleri",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": ""
+  },
+  {
+    "id": 20,
+    "title": "TÜBİTAK Gebze Sundurma",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Tubitak.png"
+  },
+  {
+    "id": 21,
+    "title": "Alpin Platform",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Alpin.png"
+  },
+  {
+    "id": 22,
+    "title": "Tece Dekor Ara Kat",
+    "category": "Tamamlanan Projeler",
+    "status": "completed",
+    "description": "",
+    "clientLogo": "/partners/Tece.png"
+  }
+]

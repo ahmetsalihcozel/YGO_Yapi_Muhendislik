@@ -3,18 +3,13 @@
 import { useEffect, useRef } from "react"
 import Image from "next/image"
 
-const partners = [
-  { name: "TechSteel A.Ş.", logo: "/partners/partner1.jpg" },
-  { name: "MetalWorks Inc.", logo: "/partners/partner2.jpg" },
-  { name: "Industrial Solutions", logo: "/partners/partner3.jpg" },
-  { name: "BuildCorp", logo: "/partners/partner4.jpg" },
-  { name: "SteelTech Pro", logo: "/partners/partner5.jpg" },
-  { name: "Engineering Plus", logo: "/partners/partner6.jpg" },
-  { name: "Construct Group", logo: "/partners/partner7.jpg" },
-  { name: "Modern Steel", logo: "/partners/partner8.jpg" },
-]
+import { Partner } from "@/lib/partners"
 
-export function Footer() {
+interface FooterProps {
+  partners?: Partner[]
+}
+
+export function Footer({ partners = [] }: FooterProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

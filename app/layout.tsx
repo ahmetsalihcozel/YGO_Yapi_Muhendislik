@@ -13,17 +13,20 @@ export const metadata: Metadata = {
     generator: 'v0.app'
 }
 
+import { getPartners } from "@/lib/partners"
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const partners = getPartners()
   return (
     <html lang="tr" className={fontSans.variable}>
       <body className="antialiased font-sans">
         <Navbar />
         <main className="pt-18">{children}</main>
-        <Footer />
+        <Footer partners={partners} />
       </body>
     </html>
   )

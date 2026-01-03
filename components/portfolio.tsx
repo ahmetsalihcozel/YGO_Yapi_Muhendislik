@@ -4,135 +4,73 @@ import type React from "react"
 
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Project } from "@/lib/projects"
+import Link from "next/link"
 
-const projects = [
-  {
-    title: "Endüstriyel Çelik Konstrüksiyon İmalatı",
-    category: "Çelik İmalat",
-    description: "15.000 m² kapalı alan fabrika çelik konstrüksiyon imalatı ve montajı",
-    images: [
-      "/projects/steel-manufacturing/project1-1.jpg",
-      "/projects/steel-manufacturing/project1-2.jpg",
-      "/projects/steel-manufacturing/project1-3.jpg",
-    ],
-    status: "completed" as const,
-  },
-  {
-    title: "Köprü Montaj ve Çelik Yapı İşleri",
-    category: "Montaj",
-    description: "250 metre açıklıklı köprü çelik taşıyıcı sistemleri montajı",
-    images: [
-      "/projects/assembly/project2-1.jpg",
-      "/projects/assembly/project2-2.jpg",
-      "/projects/assembly/project2-3.jpg",
-    ],
-    status: "ongoing" as const,
-  },
-  {
-    title: "Ticari Merkez Statik Projelendirme",
-    category: "Projelendirme",
-    description: "Çok katlı ticari merkez yapısal analiz ve statik proje çalışması",
-    images: [
-      "/projects/engineering/project3-1.jpg",
-      "/projects/engineering/project3-2.jpg",
-      "/projects/engineering/project3-3.jpg",
-    ],
-    status: "completed" as const,
-  },
-  {
-    title: "Sismik Performans Analizi",
-    category: "Analiz",
-    description: "Mevcut yapı deprem performans değerlendirmesi ve güçlendirme çalışması",
-    images: [
-      "/projects/analysis/project4-1.jpg",
-      "/projects/analysis/project4-2.jpg",
-      "/projects/analysis/project4-3.jpg",
-    ],
-    status: "completed" as const,
-  },
-  {
-    title: "Çelik Hangar İmalat Projesi",
-    category: "Çelik İmalat",
-    description: "Havaalanı hangar çelik konstrüksiyon imalatı - 8.000 m²",
-    images: [
-      "/projects/steel-manufacturing/project5-1.jpg",
-      "/projects/steel-manufacturing/project5-2.jpg",
-      "/projects/steel-manufacturing/project5-3.jpg",
-    ],
-    status: "ongoing" as const,
-  },
-  {
-    title: "Rezidans Kompleksi Yapı Mühendisliği",
-    category: "Projelendirme",
-    description: "3 blok rezidans yapısal tasarım ve projelendirme hizmetleri",
-    images: [
-      "/projects/engineering/project6-1.jpg",
-      "/projects/engineering/project6-2.jpg",
-      "/projects/engineering/project6-3.jpg",
-    ],
-    status: "upcoming" as const,
-  },
-]
+interface PortfolioProps {
+  projects: Project[];
+  showViewAll?: boolean;
+}
 
-type ProjectStatus = "all" | "ongoing" | "completed" | "upcoming"
-
-const filterButtons = [
-  { value: "all" as ProjectStatus, label: "Tümü" },
-  { value: "ongoing" as ProjectStatus, label: "Devam Eden" },
-  { value: "completed" as ProjectStatus, label: "Bitmiş" },
-  { value: "upcoming" as ProjectStatus, label: "Başlayacak" },
-]
-
-export function Portfolio() {
-  const [selectedStatus, setSelectedStatus] = useState<ProjectStatus>("all")
+export function Portfolio({ projects, showViewAll = false }: PortfolioProps) {
+  const [selectedStatus, setSelectedStatus] = useState<string>("all")
   const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({})
   const [showLogo, setShowLogo] = useState<{ [key: number]: boolean }>({})
   const [touchStart, setTouchStart] = useState<{ [key: number]: number }>({})
   const [touchEnd, setTouchEnd] = useState<{ [key: number]: number }>({})
 
-  const filteredProjects = projects.filter((project) => selectedStatus === "all" || project.status === selectedStatus)
+  // Derive unique categories from projects
+  const categories = useMemo(() => {
+    const uniqueCategories = Array.from(new Set(projects.map(p => p.category)));
+    return [
+      { value: "all", label: "Tümü" },
+      ...uniqueCategories.map(c => ({ value: c, label: c }))
+    ];
+  }, [projects]);
 
-  const handleImageChange = (projectIndex: number, imageIndex: number) => {
-    setShowLogo((prev) => ({ ...prev, [projectIndex]: true }))
+  const filteredProjects = projects.filter((project) => selectedStatus === "all" || project.category === selectedStatus)
+
+  const handleImageChange = (projectId: number, imageIndex: number) => {
+    setShowLogo((prev) => ({ ...prev, [projectId]: true }))
 
     setTimeout(() => {
       setCurrentImageIndex((prev) => ({
         ...prev,
-        [projectIndex]: imageIndex,
+        [projectId]: imageIndex,
       }))
     }, 150)
 
     setTimeout(() => {
-      setShowLogo((prev) => ({ ...prev, [projectIndex]: false }))
+      setShowLogo((prev) => ({ ...prev, [projectId]: false }))
     }, 500)
   }
 
-  const handleNextImage = (projectIndex: number, totalImages: number) => {
-    const currentIndex = currentImageIndex[projectIndex] || 0
+  const handleNextImage = (projectId: number, totalImages: number) => {
+    const currentIndex = currentImageIndex[projectId] || 0
     const nextIndex = (currentIndex + 1) % totalImages
-    handleImageChange(projectIndex, nextIndex)
+    handleImageChange(projectId, nextIndex)
   }
 
-  const handlePrevImage = (projectIndex: number, totalImages: number) => {
-    const currentIndex = currentImageIndex[projectIndex] || 0
+  const handlePrevImage = (projectId: number, totalImages: number) => {
+    const currentIndex = currentImageIndex[projectId] || 0
     const prevIndex = (currentIndex - 1 + totalImages) % totalImages
-    handleImageChange(projectIndex, prevIndex)
+    handleImageChange(projectId, prevIndex)
   }
 
-  const onTouchStart = (projectIndex: number, e: React.TouchEvent) => {
-    setTouchEnd({ ...touchEnd, [projectIndex]: 0 })
-    setTouchStart({ ...touchStart, [projectIndex]: e.targetTouches[0].clientX })
+  const onTouchStart = (projectId: number, e: React.TouchEvent) => {
+    setTouchEnd({ ...touchEnd, [projectId]: 0 })
+    setTouchStart({ ...touchStart, [projectId]: e.targetTouches[0].clientX })
   }
 
-  const onTouchMove = (projectIndex: number, e: React.TouchEvent) => {
-    setTouchEnd({ ...touchEnd, [projectIndex]: e.targetTouches[0].clientX })
+  const onTouchMove = (projectId: number, e: React.TouchEvent) => {
+    setTouchEnd({ ...touchEnd, [projectId]: e.targetTouches[0].clientX })
   }
 
-  const onTouchEnd = (projectIndex: number, totalImages: number) => {
-    const start = touchStart[projectIndex] || 0
-    const end = touchEnd[projectIndex] || 0
+  const onTouchEnd = (projectId: number, totalImages: number) => {
+    const start = touchStart[projectId] || 0
+    const end = touchEnd[projectId] || 0
     if (!start || !end) return
 
     const distance = start - end
@@ -140,10 +78,10 @@ export function Portfolio() {
     const isRightSwipe = distance < -50
 
     if (isLeftSwipe) {
-      handleNextImage(projectIndex, totalImages)
+      handleNextImage(projectId, totalImages)
     }
     if (isRightSwipe) {
-      handlePrevImage(projectIndex, totalImages)
+      handlePrevImage(projectId, totalImages)
     }
   }
 
@@ -157,36 +95,38 @@ export function Portfolio() {
           </p>
         </div>
 
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex rounded-lg border border-border bg-card p-1 shadow-sm flex-wrap gap-1 justify-center">
-            {filterButtons.map((button) => (
-              <button
-                key={button.value}
-                onClick={() => setSelectedStatus(button.value)}
-                className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all ${
-                  selectedStatus === button.value
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {button.label}
-              </button>
-            ))}
+        {categories.length > 2 && (
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex rounded-lg border border-border bg-card p-1 shadow-sm flex-wrap gap-1 justify-center">
+              {categories.map((button) => (
+                <button
+                  key={button.value}
+                  onClick={() => setSelectedStatus(button.value)}
+                  className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all ${
+                    selectedStatus === button.value
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {button.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredProjects.map((project, index) => {
-            const currentIndex = currentImageIndex[index] || 0
-            const isLogoVisible = showLogo[index] || false
+          {filteredProjects.map((project) => {
+            const currentIndex = currentImageIndex[project.id] || 0
+            const isLogoVisible = showLogo[project.id] || false
             return (
-              <Card key={index} className="overflow-hidden border-border hover:shadow-lg transition-all group">
+              <Card key={project.id} className="overflow-hidden border-border hover:shadow-lg transition-all group">
                 <CardContent className="p-0">
                   <div
                     className="relative aspect-[3/2] overflow-hidden"
-                    onTouchStart={(e) => onTouchStart(index, e)}
-                    onTouchMove={(e) => onTouchMove(index, e)}
-                    onTouchEnd={() => onTouchEnd(index, project.images.length)}
+                    onTouchStart={(e) => onTouchStart(project.id, e)}
+                    onTouchMove={(e) => onTouchMove(project.id, e)}
+                    onTouchEnd={() => onTouchEnd(project.id, project.images.length)}
                   >
                     <Image
                       src={project.images[currentIndex] || "/placeholder.svg"}
@@ -201,46 +141,66 @@ export function Portfolio() {
                       }`}
                     >
                       <Image
-                        src="/ygo_logo.svg"
+                        src="/ygo_logo_primary.svg"
                         alt="YGO Logo"
                         width={120}
                         height={120}
-                        className="animate-pulse [filter:brightness(0)_saturate(100%)_invert(27%)_sepia(98%)_saturate(2466%)_hue-rotate(346deg)_brightness(94%)_contrast(97%)]"
+                        className="animate-pulse"
                       />
                     </div>
 
-                    <button
-                      onClick={() => handlePrevImage(index, project.images.length)}
-                      className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all z-10 items-center justify-center"
-                      aria-label="Önceki görsel"
-                    >
-                      <ChevronLeft className="w-6 h-6" />
-                    </button>
-
-                    <button
-                      onClick={() => handleNextImage(index, project.images.length)}
-                      className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all z-10 items-center justify-center"
-                      aria-label="Sonraki görsel"
-                    >
-                      <ChevronRight className="w-6 h-6" />
-                    </button>
-
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                      {project.images.map((_, imgIndex) => (
+                    {project.images.length > 1 && (
+                      <>
                         <button
-                          key={imgIndex}
-                          onClick={() => handleImageChange(index, imgIndex)}
-                          className={`w-2 h-2 rounded-full transition-all ${
-                            currentIndex === imgIndex ? "bg-primary w-8" : "bg-white/60 hover:bg-white/80"
-                          }`}
-                          aria-label={`Görsel ${imgIndex + 1}`}
-                        />
-                      ))}
-                    </div>
+                          onClick={() => handlePrevImage(project.id, project.images.length)}
+                          className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all z-10 items-center justify-center"
+                          aria-label="Önceki görsel"
+                        >
+                          <ChevronLeft className="w-6 h-6" />
+                        </button>
+
+                        <button
+                          onClick={() => handleNextImage(project.id, project.images.length)}
+                          className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all z-10 items-center justify-center"
+                          aria-label="Sonraki görsel"
+                        >
+                          <ChevronRight className="w-6 h-6" />
+                        </button>
+
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                          {project.images.map((_, imgIndex) => (
+                            <button
+                              key={imgIndex}
+                              onClick={() => handleImageChange(project.id, imgIndex)}
+                              className={`w-2 h-2 rounded-full transition-all ${
+                                currentIndex === imgIndex ? "bg-primary w-8" : "bg-white/60 hover:bg-white/80"
+                              }`}
+                              aria-label={`Görsel ${imgIndex + 1}`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="p-6">
-                    <p className="text-sm text-primary font-semibold mb-2">{project.category}</p>
-                    <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+                    <div className="grid grid-cols-12 gap-4 mb-2">
+                      <div className="col-span-8">
+                        <p className="text-sm text-primary font-semibold mb-2">{project.category}</p>
+                        <h3 className="text-xl font-bold">{project.title}</h3>
+                      </div>
+                      <div className="col-span-4 flex justify-end items-center">
+                        {project.clientLogo && (
+                          <div className="relative w-32 h-12 opacity-80 hover:opacity-100 transition-opacity">
+                            <Image
+                              src={project.clientLogo}
+                              alt="Client Logo"
+                              fill
+                              className="object-contain object-right"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
                   </div>
                 </CardContent>
@@ -248,6 +208,17 @@ export function Portfolio() {
             )
           })}
         </div>
+
+        {showViewAll && (
+            <div className="mt-12 text-center">
+                <Link
+                href="/Projeler"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8"
+                >
+                Hepsini Görüntüle
+                </Link>
+            </div>
+        )}
       </div>
     </section>
   )
